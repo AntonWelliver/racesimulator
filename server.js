@@ -12,6 +12,9 @@ const {
 const connectDB = require('./backend/config/db.js');
 
 // Routes
+const raceRoutes = require('./backend/routes/raceRoutes.js');
+const raceEntryRoutes = require('./backend/routes/raceEntryRoutes.js');
+
 const userRoutes = require('./backend/routes/userRoutes.js');
 
 dotenv.config();
@@ -31,7 +34,9 @@ app.get('/', (req, res) => {
 app.use(express.json());
 
 // Should we use /api/v1
-app.use('/api/users', userRoutes);
+app.use('/api/v1/race-list', raceRoutes);
+app.use('/api/v1/race-entries', raceEntryRoutes);
+app.use('/api/v1/users', userRoutes);
 
 // For deployment
 if (process.env.NODE_ENV === 'production') {
