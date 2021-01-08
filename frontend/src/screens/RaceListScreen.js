@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -17,9 +18,9 @@ const RaceListScreen = () => {
 
 	return (
 		<>
-			<Row className='align-items-center'>
+			<Row className='align-items-center my-4'>
 				<Col>
-					<h1>Products</h1>
+					<h1>Race List</h1>
 				</Col>
 			</Row>
 			{loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
@@ -30,20 +31,21 @@ const RaceListScreen = () => {
 								<th>NAME</th>
 								<th>DISTANCE</th>
 								<th>ENTRIES</th>
-								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							{races.map(race => (
-								<tr key={race._id}>
-									<td>{race.name}</td>
-									<td>
-										{race.distance}km
+								<LinkContainer to={`/parameters/${race._id}`}>
+									<tr key={race._id}>
+										<td>{race.name}</td>
+										<td>
+											{race.distance}km
                                     </td>
-									<td>
-										{race.entries}
-									</td>
-								</tr>
+										<td>
+											{race.entries}
+										</td>
+									</tr>
+								</LinkContainer>
 							))}
 						</tbody>
 					</Table>
