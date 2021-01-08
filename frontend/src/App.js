@@ -13,7 +13,7 @@ const App = () => {
       <main>
         <Container>
           <Route path='/' component={RaceListScreen} exact />
-          <Route path='/parameters' component={ParameterScreen} />
+          <Route path='/parameters/:id' component={ParameterScreen} />
         </Container>
       </main>
       <Footer />

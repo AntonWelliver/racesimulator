@@ -35,12 +35,12 @@ const RaceListScreen = () => {
 						</thead>
 						<tbody>
 							{races.map(race => (
-								<LinkContainer to={`/parameters/${race._id}`}>
-									<tr key={race._id}>
+								<LinkContainer to={`/parameters/${race._id}`} key={race._id}>
+									<tr>
 										<td>{race.name}</td>
 										<td>
 											{race.distance}km
-                                    </td>
+                                    	</td>
 										<td>
 											{race.entries}
 										</td>
