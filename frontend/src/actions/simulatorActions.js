@@ -6,6 +6,9 @@ import {
     SINGLE_RACE_REQUEST,
     SINGLE_RACE_SUCCESS,
     SINGLE_RACE_FAIL,
+    CREATE_STARTLIST_REQUEST,
+    CREATE_STARTLIST_SUCCESS,
+    CREATE_STARTLIST_FAIL,
 } from '../constants/simulatorConstants';
 
 export const listRaces = () => async (dispatch) => {
@@ -42,6 +45,53 @@ export const getSingleRaceInfo = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: SINGLE_RACE_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+const calculateStartTime = (minSplit, maxSplit, distance) => {
+    let startTime = (minSplit + Math.random() * (maxSplit - minSplit)) * distance
+    return startTime
+}
+
+const generateStartlist = (raceEntries, minSplit, maxSplit, distance) => {
+    const startList = raceEntries.map(raceEntry => {
+        let startTime = calculateStartTime(minSplit, maxSplit, distance)
+        return {
+            startTime,
+            _id: raceEntry._id,
+            runnerName: raceEntry.name,
+            startNumber: raceEntry.startNumber
+        }
+    })
+    console.log(startList)
+}
+
+export const createStartlist = (id, minSplit, maxSplit) => async (dispatch) => {
+    try {
+        dispatch({ type: CREATE_STARTLIST_REQUEST });
+
+        const raceResult = await axios.get(`/api/v1/race-list/${id}`)
+
+        const race = raceResult.data.race
+        const distance = race.distance
+
+        const { data } = await axios.get(`/api/v1/race-list/${id}/race-entries`);
+
+        const raceEntries = data.raceEntries
+
+        generateStartlist(raceEntries, minSplit, maxSplit, distance)
+        /* dispatch({
+            type: CREATE_STARTLIST_SUCCESS,
+            payload: data.race,
+        }); */
+    } catch (error) {
+        dispatch({
+            type: CREATE_STARTLIST_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

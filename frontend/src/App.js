@@ -4,7 +4,8 @@ import { Container } from 'react-bootstrap'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import RaceListScreen from './screens/RaceListScreen'
-import ParameterScreen from './screens/ParameterScreen'
+import RaceParameterScreen from './screens/RaceParameterScreen'
+import EntryParameterScreen from './screens/EntryParameterScreen'
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
       <main>
         <Container>
           <Route path='/' component={RaceListScreen} exact />
-          <Route path='/parameters/:id' component={ParameterScreen} />
+          <Route path='/race-parameters/:id' component={RaceParameterScreen} />
+          <Route path='/entry-parameters/:id' component={EntryParameterScreen} />
         </Container>
       </main>
       <Footer />

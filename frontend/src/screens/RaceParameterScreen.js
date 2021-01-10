@@ -7,7 +7,7 @@ import FormContainer from '../components/FormContainer'
 import { getSingleRaceInfo } from '../actions/simulatorActions'
 import { SINGLE_RACE_RESET } from '../constants/simulatorConstants'
 
-const ParameterScreen = ({ match, history }) => {
+const RaceParameterScreen = ({ match, history }) => {
     const raceId = match.params.id
     const dispatch = useDispatch()
 
@@ -78,4 +78,4 @@ const ParameterScreen = ({ match, history }) => {
     );
 };
 
-export default ParameterScreen;
+export default RaceParameterScreen;
