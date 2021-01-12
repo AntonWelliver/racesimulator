@@ -5,3 +5,7 @@ main {
 .secondary {
 	color: grey;
 }
+
+.table-right {
+	text-align: right;
+}
