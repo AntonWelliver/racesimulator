@@ -17,7 +17,7 @@ const App = () => {
           <Route path='/' component={RaceListScreen} exact />
           <Route path='/race-parameters/:id' component={RaceParameterScreen} />
           <Route path='/entry-parameters/:id' component={EntryParameterScreen} />
-          <Route path='/startlist' component={StartListScreen} />
+          <Route path='/startlist/:id' component={StartListScreen} />
         </Container>
       </main>
       <Footer />

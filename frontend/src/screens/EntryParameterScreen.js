@@ -40,7 +40,7 @@ const EntryParameterScreen = ({ match, history }) => {
             setMessage('Difference between fastest and slowest must be at least 30 seconds')
         } else {
             dispatch(createStartlist(raceId, minSplitSec, maxSplitSec))
-            history.push('/startlist')
+            history.push(`/startlist/${raceId}`)
         }
     }
 

@@ -4,9 +4,15 @@ import { useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
-const StartListScreen = ({ history }) => {
+const StartListScreen = ({ match, history }) => {
+    const raceId = match.params.id
+
     const goBack = () => {
         history.push('/')
+    }
+
+    const nextPage = () => {
+        history.push(`/race-parameters/${raceId}`)
     }
 
     const startList = useSelector(state => state.startList)
@@ -14,13 +20,31 @@ const StartListScreen = ({ history }) => {
 
     const { raceName, distance } = startInfo
 
+    const entryTime = (startTime) => {
+        let timeLeft = startTime
+
+        let minutes = Math.floor(timeLeft / 60)
+        timeLeft = timeLeft - (minutes * 60)
+
+        let seconds = Math.floor(timeLeft)
+        timeLeft = timeLeft - seconds
+
+        const mm = minutes < 10 ? '0' + minutes.toString() : minutes.toString()
+        const ss = seconds < 10 ? '0' + seconds.toString() : seconds.toString()
+
+        const time = `${mm}:${ss}`
+
+        return time
+    }
+
     return (
         <>
             <Row className='align-items-center text-center my-4'>
+                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
                 <Col>
                     <h1>Startlist</h1>
                 </Col>
-                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
+                <Button variant='light' className='align-self-center' onClick={() => nextPage()}>Next</Button>
             </Row>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
@@ -40,17 +64,18 @@ const StartListScreen = ({ history }) => {
                         </thead>
                         <tbody>
                             {startInfo.startList.map((entry, index) => (
-                                <tr>
+                                <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{entry.runnerName}</td>
                                     <td>{entry.startNumber}</td>
-                                    <td className='table-right'>{entry.startTime}</td>
+                                    <td className='table-right'>{`${entryTime(entry.startTime)}`}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
                 </>
-            )}
+            )
+            }
         </>
     );
 };
