@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Col, Button, Form } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { createStartlist } from '../actions/simulatorActions'
@@ -40,7 +40,6 @@ const EntryParameterScreen = ({ match, history }) => {
             setMessage('Difference between fastest and slowest must be at least 30 seconds')
         } else {
             dispatch(createStartlist(raceId, minSplitSec, maxSplitSec))
-            console.log('ok')
         }
     }
 

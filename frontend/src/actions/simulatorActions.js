@@ -58,7 +58,7 @@ const calculateStartTime = (minSplit, maxSplit, distance) => {
     return startTime
 }
 
-const generateStartlist = (raceEntries, minSplit, maxSplit, distance) => {
+const generateStartlist = (raceEntries, minSplit, maxSplit, distance, raceName) => {
     const startList = raceEntries.map(raceEntry => {
         let startTime = calculateStartTime(minSplit, maxSplit, distance)
         return {
@@ -68,27 +68,34 @@ const generateStartlist = (raceEntries, minSplit, maxSplit, distance) => {
             startNumber: raceEntry.startNumber
         }
     })
-    console.log(startList)
+    const list = {
+        distance,
+        raceName,
+        startList
+    }
+    return list
 }
 
 export const createStartlist = (id, minSplit, maxSplit) => async (dispatch) => {
     try {
-        dispatch({ type: CREATE_STARTLIST_REQUEST });
+        dispatch({ type: CREATE_STARTLIST_REQUEST })
 
         const raceResult = await axios.get(`/api/v1/race-list/${id}`)
 
         const race = raceResult.data.race
         const distance = race.distance
+        const raceName = race.name
 
-        const { data } = await axios.get(`/api/v1/race-list/${id}/race-entries`);
+        const { data } = await axios.get(`/api/v1/race-list/${id}/race-entries`)
 
         const raceEntries = data.raceEntries
 
-        generateStartlist(raceEntries, minSplit, maxSplit, distance)
-        /* dispatch({
+        const startInfo = generateStartlist(raceEntries, minSplit, maxSplit, distance, raceName)
+
+        dispatch({
             type: CREATE_STARTLIST_SUCCESS,
-            payload: data.race,
-        }); */
+            payload: startInfo
+        });
     } catch (error) {
         dispatch({
             type: CREATE_STARTLIST_FAIL,
