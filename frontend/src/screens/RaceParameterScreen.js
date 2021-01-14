@@ -16,8 +16,9 @@ const RaceParameterScreen = ({ match, history }) => {
 
     const [maxSplit, setMaxSplit] = useState('')
     const [minSplit, setMinSplit] = useState('')
-    const [midSplit, setMidSplit] = useState('')
-    const [devSplit, setDevSplit] = useState('')
+    const [variation, setVariation] = useState('')
+    const [initialVariation, setInitialVariation] = useState('')
+    const [message, setMessage] = useState(null)
 
     useEffect(() => {
         if (!race.name) {
@@ -30,21 +31,52 @@ const RaceParameterScreen = ({ match, history }) => {
         history.push('/')
     }
 
+    const timeInSec = (timeStr) => {
+        const timeArray = timeStr.split(':')
+
+        let seconds = 0
+        let minNum = parseInt(timeArray[0], 10)
+        let secNum = parseInt(timeArray[1], 10)
+
+        seconds = minNum * 60 + secNum
+
+        return seconds
+    }
+
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log(maxSplit, minSplit, midSplit, devSplit)
+
+        const splitDiff = 30
+        const varDiff = 10
+
+        let minSplitSec = timeInSec(minSplit)
+        let maxSplitSec = timeInSec(maxSplit)
+
+        if (maxSplitSec - minSplitSec < splitDiff) {
+            setMessage(`Difference between fastest and slowest must be at least ${splitDiff} seconds`)
+        } else {
+            let variationSec = timeInSec(variation)
+            let initialVariationSec = timeInSec(initialVariation)
+
+            if (variationSec - initialVariationSec < varDiff) {
+                setMessage(`Initial variation must be at least ${varDiff} seconds faster than variation`)
+            } else {
+                console.log('Run simulation')
+            }
+        }
     }
 
     return (
         <>
-            <Row className='my-4'>
+            <Row className='align-items-center text-center my-4'>
+                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
                 <Col>
                     <h1>Simulator parameters</h1>
                 </Col>
-                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
             </Row>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
+                    {message && <Message variant='danger'>{message}</Message>}
                     <Row className='text-center my-4'>
                         <Col>
                             <h5 className='secondary'>Select simulator parameters for {race.name}, {race.distance}km</h5>
@@ -53,20 +85,20 @@ const RaceParameterScreen = ({ match, history }) => {
                     <FormContainer>
                         <Form onSubmit={submitHandler}>
                             <Form.Group>
-                                <Form.Label>Max Split Time</Form.Label>
-                                <Form.Control type="time" placeholder='Enter race maximum split time' value={maxSplit} onChange={(e) => setMaxSplit(e.target.value)}></Form.Control>
+                                <Form.Label>Fastest Split Time</Form.Label>
+                                <Form.Control type="time" min="02:00" max="10:00" value={minSplit} onChange={(e) => setMinSplit(e.target.value)} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Min Split Time</Form.Label>
-                                <Form.Control type='time' placeholder='Enter race minimum split time' value={minSplit} onChange={(e) => setMinSplit(e.target.value)}></Form.Control>
+                                <Form.Label>Slowest Split Time</Form.Label>
+                                <Form.Control type='time' min="02:00" max="10:00" value={maxSplit} onChange={(e) => setMaxSplit(e.target.value)} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Mid Split</Form.Label>
-                                <Form.Control type='time' placeholder='Enter race mid split time' value={midSplit} onChange={(e) => setMidSplit(e.target.value)}></Form.Control>
+                                <Form.Label>Variation</Form.Label>
+                                <Form.Control type='time' min="00:10" max="01:00" value={variation} onChange={(e) => setVariation(e.target.value)} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <Form.Label>Deviation</Form.Label>
-                                <Form.Control type='time' placeholder='Enter race deviation' value={devSplit} onChange={(e) => setDevSplit(e.target.value)}></Form.Control>
+                                <Form.Label>Initial Variation</Form.Label>
+                                <Form.Control type='time' min="00:10" max="01:00" value={initialVariation} onChange={(e) => setInitialVariation(e.target.value)} required></Form.Control>
                             </Form.Group>
 
                             <Button type='submit' variant='dark'>Submit and start simulation</Button>

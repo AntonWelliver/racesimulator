@@ -8,8 +8,8 @@ import { createStartlist } from '../actions/simulatorActions'
 const EntryParameterScreen = ({ match, history }) => {
     const raceId = match.params.id
 
-    const [minSplit, setMinSplit] = useState('')
-    const [maxSplit, setMaxSplit] = useState('')
+    const [minKmTime, setMinKmTime] = useState('')
+    const [maxKmTime, setMaxKmTime] = useState('')
     const [message, setMessage] = useState(null)
 
     const dispatch = useDispatch()
@@ -33,24 +33,24 @@ const EntryParameterScreen = ({ match, history }) => {
     const submitHandler = (e) => {
         e.preventDefault()
 
-        let minSplitSec = timeInSec(minSplit)
-        let maxSplitSec = timeInSec(maxSplit)
+        let minKmTimeSec = timeInSec(minKmTime)
+        let maxKmTimeSec = timeInSec(maxKmTime)
 
-        if (maxSplitSec - minSplitSec < 30) {
+        if (maxKmTimeSec - minKmTimeSec < 30) {
             setMessage('Difference between fastest and slowest must be at least 30 seconds')
         } else {
-            dispatch(createStartlist(raceId, minSplitSec, maxSplitSec))
+            dispatch(createStartlist(raceId, minKmTimeSec, maxKmTimeSec))
             history.push(`/startlist/${raceId}`)
         }
     }
 
     return (
         <>
-            <Row className='my-4'>
+            <Row className='align-items-center text-center my-4'>
+                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
                 <Col>
                     <h1>Startlist parameters</h1>
                 </Col>
-                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
             </Row>
             <>
                 {message && <Message variant='danger'>{message}</Message>}
@@ -62,12 +62,12 @@ const EntryParameterScreen = ({ match, history }) => {
                 <FormContainer>
                     <Form onSubmit={submitHandler}>
                         <Form.Group>
-                            <Form.Label>Fastest Average Split Time</Form.Label>
-                            <Form.Control type="time" placeholder='Enter fastest average split time' min="02:00" max="10:00" value={minSplit} onChange={(e) => setMinSplit(e.target.value)} required></Form.Control>
+                            <Form.Label>Fastest Average Km Time</Form.Label>
+                            <Form.Control type="time" min="02:00" max="10:00" value={minKmTime} onChange={(e) => setMinKmTime(e.target.value)} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Slowest Average Split Time</Form.Label>
-                            <Form.Control type='time' placeholder='Enter slowest average split time' min="02:00" max="10:00" value={maxSplit} onChange={(e) => setMaxSplit(e.target.value)} required></Form.Control>
+                            <Form.Label>Slowest Average Km Time</Form.Label>
+                            <Form.Control type='time' min="02:00" max="10:00" value={maxKmTime} onChange={(e) => setMaxKmTime(e.target.value)} required></Form.Control>
                         </Form.Group>
                         <Button type='submit' variant='dark'>Submit</Button>
                     </Form>

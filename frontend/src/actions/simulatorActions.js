@@ -68,10 +68,15 @@ const generateStartlist = (raceEntries, minSplit, maxSplit, distance, raceName) 
             startNumber: raceEntry.startNumber
         }
     })
+
+    const sortedStartlist = startList.sort((a, b) => {
+        return a.startTime - b.startTime
+    })
+
     const list = {
         distance,
         raceName,
-        startList
+        startList: sortedStartlist
     }
     return list
 }
