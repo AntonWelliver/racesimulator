@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { getSingleRaceInfo } from '../actions/simulatorActions'
+import { getSingleRaceInfo, createResultlist } from '../actions/simulatorActions'
 import { SINGLE_RACE_RESET } from '../constants/simulatorConstants'
 
 const RaceParameterScreen = ({ match, history }) => {
@@ -13,6 +13,9 @@ const RaceParameterScreen = ({ match, history }) => {
 
     const singleRaceInfo = useSelector(state => state.singleRaceInfo)
     const { loading, error, race } = singleRaceInfo
+
+    const startInfo = useSelector(state => state.startInfo)
+    const { startList } = startInfo
 
     const [maxSplit, setMaxSplit] = useState('')
     const [minSplit, setMinSplit] = useState('')
@@ -61,7 +64,7 @@ const RaceParameterScreen = ({ match, history }) => {
             if (variationSec - initialVariationSec < varDiff) {
                 setMessage(`Initial variation must be at least ${varDiff} seconds faster than variation`)
             } else {
-                console.log('Run simulation')
+                dispatch(createResultlist(startList, minSplitSec, maxSplitSec, variationSec, initialVariationSec))
             }
         }
     }

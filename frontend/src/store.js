@@ -1,12 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { raceListReducer, singleRaceInfoReducer, startListReducer } from './reducers/simulatorReducers'
+import { raceListReducer, singleRaceInfoReducer, startInfoReducer } from './reducers/simulatorReducers'
 
 const reducer = combineReducers({
     raceList: raceListReducer,
     singleRaceInfo: singleRaceInfoReducer,
-    startList: startListReducer,
+    startInfo: startInfoReducer,
 })
 
 const initialState = {}

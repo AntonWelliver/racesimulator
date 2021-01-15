@@ -15,10 +15,10 @@ const StartListScreen = ({ match, history }) => {
         history.push(`/race-parameters/${raceId}`)
     }
 
-    const startList = useSelector(state => state.startList)
-    const { loading, error, startInfo } = startList
+    const startInfo = useSelector(state => state.startInfo)
+    const { loading, error, startList } = startInfo
 
-    const { raceName, distance } = startInfo
+    const { raceName, distance } = startList
 
     const entryTime = (startTime) => {
         let timeLeft = startTime
@@ -63,7 +63,7 @@ const StartListScreen = ({ match, history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {startInfo.startList.map((entry, index) => (
+                            {startList.startListInfo.map((entry, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{entry.runnerName}</td>
