@@ -65,6 +65,7 @@ const RaceParameterScreen = ({ match, history }) => {
                 setMessage(`Initial variation must be at least ${varDiff} seconds faster than variation`)
             } else {
                 dispatch(createResultlist(startList, minSplitSec, maxSplitSec, variationSec, initialVariationSec))
+                history.push(`/resultList/${raceId}`)
             }
         }
     }

@@ -8,7 +8,10 @@ import {
     SINGLE_RACE_RESET,
     CREATE_STARTLIST_REQUEST,
     CREATE_STARTLIST_SUCCESS,
-    CREATE_STARTLIST_FAIL
+    CREATE_STARTLIST_FAIL,
+    CREATE_RESULTINFO_REQUEST,
+    CREATE_RESULTINFO_SUCCESS,
+    CREATE_RESULTINFO_FAIL
 } from '../constants/simulatorConstants'
 
 export const raceListReducer = (state = { races: [] }, action) => {
@@ -46,6 +49,19 @@ export const startInfoReducer = (state = { startList: {} }, action) => {
         case CREATE_STARTLIST_SUCCESS:
             return { loading: false, startList: action.payload }
         case CREATE_STARTLIST_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const resultInfoReducer = (state = { resultInfo: {} }, action) => {
+    switch (action.type) {
+        case CREATE_RESULTINFO_REQUEST:
+            return { loading: true, ...state }
+        case CREATE_RESULTINFO_SUCCESS:
+            return { loading: false, resultInfo: action.payload }
+        case CREATE_RESULTINFO_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

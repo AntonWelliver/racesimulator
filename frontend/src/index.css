@@ -9,3 +9,7 @@ main {
 .table-right {
 	text-align: right;
 }
+
+.splitTimes {
+	font-size: small;
+}

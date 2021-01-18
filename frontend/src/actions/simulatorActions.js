@@ -9,9 +9,9 @@ import {
     CREATE_STARTLIST_REQUEST,
     CREATE_STARTLIST_SUCCESS,
     CREATE_STARTLIST_FAIL,
-    CREATE_RESULTLIST_REQUEST,
-    CREATE_RESULTLIST_SUCCESS,
-    CREATE_RESULTLIST_FAIL,
+    CREATE_RESULTINFO_REQUEST,
+    CREATE_RESULTINFO_SUCCESS,
+    CREATE_RESULTINFO_FAIL,
 } from '../constants/simulatorConstants';
 
 export const listRaces = () => async (dispatch) => {
@@ -76,12 +76,12 @@ const generateStartlist = (raceEntries, minKmTimeSec, maxKmTimeSec, distance, ra
         return a.startTime - b.startTime
     })
 
-    const startList = {
+    const info = {
         distance,
         raceName,
         startListInfo: sortedStartlist
     }
-    return startList
+    return info
 }
 
 export const createStartlist = (id, minKmTimeSec, maxKmTimeSec) => async (dispatch) => {
@@ -94,7 +94,7 @@ export const createStartlist = (id, minKmTimeSec, maxKmTimeSec) => async (dispat
         const distance = race.distance
         const raceName = race.name
 
-        const { data } = await axios.get(`/api/v1/race-list/${id}/race-entries`)
+        const { data } = await axios.get(`/api/v1/race-list/${id}/race-entries?limit=100`)
 
         const raceEntries = data.raceEntries
 
@@ -148,36 +148,48 @@ const calculateResultTime = (startTime, minSplitSec, maxSplitSec, variationSec, 
         }
         return { kmTime, totalTime }
     })
-    console.log(splitsKm)
     return splitsKm
 }
 
-const generateResultlist = (startListInfo, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => {
-    const resultList = startListInfo.map(entryStartTime => {
-        const startTime = entryStartTime.startTime
-        let resultTime = calculateResultTime(startTime, minSplitSec, maxSplitSec, variationSec, initialVariationSec, distance)
+const generateResultlist = (startListInfo, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => {
+    const resultList = startListInfo.map(entryInfo => {
+        const { startTime, runnerName, _id } = entryInfo
+        let allTimes = calculateResultTime(startTime, minSplitSec, maxSplitSec, variationSec, initialVariationSec, distance)
         return {
-            resultTime
+            allTimes,
+            runnerName,
+            _id,
+            totalTime: allTimes[distance - 1].totalTime
         }
     })
-    return resultList
+
+    const sortedResultlist = resultList.sort((a, b) => {
+        return a.totalTime - b.totalTime
+    })
+
+    const info = {
+        distance,
+        raceName,
+        resultListInfo: sortedResultlist
+    }
+    return info
 }
 
 export const createResultlist = (startList, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => async (dispatch) => {
     try {
-        dispatch({ type: CREATE_RESULTLIST_REQUEST })
+        dispatch({ type: CREATE_RESULTINFO_REQUEST })
 
-        const { distance, startListInfo } = startList
+        const { raceName, distance, startListInfo } = startList
 
-        const resultInfo = generateResultlist(startListInfo, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
+        const resultInfo = generateResultlist(startListInfo, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
 
         dispatch({
-            type: CREATE_RESULTLIST_SUCCESS,
+            type: CREATE_RESULTINFO_SUCCESS,
             payload: resultInfo
         });
     } catch (error) {
         dispatch({
-            type: CREATE_RESULTLIST_FAIL,
+            type: CREATE_RESULTINFO_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
