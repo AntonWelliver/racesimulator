@@ -42,12 +42,12 @@ export const singleRaceInfoReducer = (state = { race: {} }, action) => {
     }
 }
 
-export const startInfoReducer = (state = { startList: {} }, action) => {
+export const startInfoReducer = (state = { startListInfo: {} }, action) => {
     switch (action.type) {
         case CREATE_STARTLIST_REQUEST:
             return { loading: true, ...state }
         case CREATE_STARTLIST_SUCCESS:
-            return { loading: false, startList: action.payload }
+            return { loading: false, startListInfo: action.payload }
         case CREATE_STARTLIST_FAIL:
             return { loading: false, error: action.payload }
         default:

@@ -15,7 +15,7 @@ const RaceParameterScreen = ({ match, history }) => {
     const { loading, error, race } = singleRaceInfo
 
     const startInfo = useSelector(state => state.startInfo)
-    const { startList } = startInfo
+    const { startListInfo } = startInfo
 
     const [maxSplit, setMaxSplit] = useState('')
     const [minSplit, setMinSplit] = useState('')
@@ -68,7 +68,7 @@ const RaceParameterScreen = ({ match, history }) => {
             if (variationSec - initialVariationSec < varDiff) {
                 setMessage(`Initial variation must be at least ${varDiff} seconds faster than variation`)
             } else {
-                dispatch(createResultlist(startList, minSplitSec, maxSplitSec, variationSec, initialVariationSec))
+                dispatch(createResultlist(startListInfo, minSplitSec, maxSplitSec, variationSec, initialVariationSec))
                 history.push(`/resultList/${raceId}`)
             }
         }

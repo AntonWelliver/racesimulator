@@ -13,7 +13,7 @@ const reducer = combineReducers({
 const startlistFromStorage = sessionStorage.getItem('startlist') ? JSON.parse(sessionStorage.getItem('startlist')) : {}
 
 const initialState = {
-    startInfo: { startList: startlistFromStorage }
+    startInfo: { startListInfo: startlistFromStorage }
 }
 
 const middleware = [thunk]

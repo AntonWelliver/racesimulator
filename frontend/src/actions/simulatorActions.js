@@ -79,7 +79,7 @@ const generateStartlist = (raceEntries, minKmTimeSec, maxKmTimeSec, distance, ra
     const info = {
         distance,
         raceName,
-        startListInfo: sortedStartlist
+        startList: sortedStartlist
     }
     return info
 }
@@ -98,14 +98,14 @@ export const createStartlist = (id, minKmTimeSec, maxKmTimeSec) => async (dispat
 
         const raceEntries = data.raceEntries
 
-        const startList = generateStartlist(raceEntries, minKmTimeSec, maxKmTimeSec, distance, raceName)
+        const startListInfo = generateStartlist(raceEntries, minKmTimeSec, maxKmTimeSec, distance, raceName)
 
         dispatch({
             type: CREATE_STARTLIST_SUCCESS,
-            payload: startList
+            payload: startListInfo
         });
 
-        sessionStorage.setItem('startlist', JSON.stringify(startList))
+        sessionStorage.setItem('startlist', JSON.stringify(startListInfo))
 
     } catch (error) {
         dispatch({
@@ -154,8 +154,8 @@ const calculateResultTime = (startTime, minSplitSec, maxSplitSec, variationSec, 
     return splitsKm
 }
 
-const generateResultlist = (startListInfo, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => {
-    const resultList = startListInfo.map(entryInfo => {
+const generateResultlist = (startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => {
+    const resultList = startList.map(entryInfo => {
         const { startTime, runnerName, _id } = entryInfo
         let allTimes = calculateResultTime(startTime, minSplitSec, maxSplitSec, variationSec, initialVariationSec, distance)
         return {
@@ -178,13 +178,13 @@ const generateResultlist = (startListInfo, raceName, distance, minSplitSec, maxS
     return info
 }
 
-export const createResultlist = (startList, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => async (dispatch) => {
+export const createResultlist = (startListInfo, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => async (dispatch) => {
     try {
         dispatch({ type: CREATE_RESULTINFO_REQUEST })
 
-        const { raceName, distance, startListInfo } = startList
+        const { raceName, distance, startList } = startListInfo
 
-        const resultInfo = generateResultlist(startListInfo, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
+        const resultInfo = generateResultlist(startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
 
         dispatch({
             type: CREATE_RESULTINFO_SUCCESS,
