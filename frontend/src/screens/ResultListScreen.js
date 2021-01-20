@@ -5,8 +5,14 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 
 const ResultListScreen = ({ match, history }) => {
-    const goBack = () => {
+    const raceId = match.params.id
+
+    const backToRaceList = () => {
         history.push('/')
+    }
+
+    const backToStartList = () => {
+        history.push(`/startlist/${raceId}`)
     }
 
     const resultInfo = useSelector(state => state.resultInfo)
@@ -54,7 +60,8 @@ const ResultListScreen = ({ match, history }) => {
     return (
         <>
             <Row className='align-items-center text-center my-4'>
-                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
+                <Button variant='light' className='align-self-center' onClick={() => backToRaceList()}>Back to race list</Button>
+                <Button variant='light' className='align-self-center' onClick={() => backToStartList()}>Back to start list</Button>
                 <Col>
                     <h1>ResultList</h1>
                 </Col>

@@ -47,7 +47,7 @@ const EntryParameterScreen = ({ match, history }) => {
     return (
         <>
             <Row className='align-items-center text-center my-4'>
-                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
+                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Back to race list</Button>
                 <Col>
                     <h1>Startlist parameters</h1>
                 </Col>

@@ -104,6 +104,9 @@ export const createStartlist = (id, minKmTimeSec, maxKmTimeSec) => async (dispat
             type: CREATE_STARTLIST_SUCCESS,
             payload: startList
         });
+
+        sessionStorage.setItem('startlist', JSON.stringify(startList))
+
     } catch (error) {
         dispatch({
             type: CREATE_STARTLIST_FAIL,

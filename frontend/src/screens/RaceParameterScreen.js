@@ -29,9 +29,13 @@ const RaceParameterScreen = ({ match, history }) => {
         }
     }, [dispatch, race, raceId])
 
-    const goBack = () => {
+    const backToRaceList = () => {
         dispatch({ type: SINGLE_RACE_RESET })
         history.push('/')
+    }
+
+    const backToStartList = () => {
+        history.push(`/startlist/${raceId}`)
     }
 
     const timeInSec = (timeStr) => {
@@ -73,7 +77,8 @@ const RaceParameterScreen = ({ match, history }) => {
     return (
         <>
             <Row className='align-items-center text-center my-4'>
-                <Button variant='light' className='align-self-center' onClick={() => goBack()}>Go Back</Button>
+                <Button variant='light' className='align-self-center' onClick={() => backToRaceList()}>Back to race list</Button>
+                <Button variant='light' className='align-self-center' onClick={() => backToStartList()}>Back to start list</Button>
                 <Col>
                     <h1>Simulator parameters</h1>
                 </Col>
