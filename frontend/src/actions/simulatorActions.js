@@ -171,7 +171,7 @@ const calculateResultTime = (startTime, minSplitSec, maxSplitSec, variationSec, 
 }
 
 const generateResultlist = (startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => {
-    const resultList = startList.map(entryInfo => {
+    const resultInfo = startList.map(entryInfo => {
         const { startTime, runnerName, _id } = entryInfo
         let allTimes = calculateResultTime(startTime, minSplitSec, maxSplitSec, variationSec, initialVariationSec, distance)
         return {
@@ -182,14 +182,14 @@ const generateResultlist = (startList, raceName, distance, minSplitSec, maxSplit
         }
     })
 
-    const sortedResultlist = resultList.sort((a, b) => {
+    const sortedResultlist = resultInfo.sort((a, b) => {
         return a.totalTime - b.totalTime
     })
 
     const info = {
         distance,
         raceName,
-        resultListInfo: sortedResultlist
+        resultList: sortedResultlist
     }
     return info
 }
@@ -200,11 +200,11 @@ export const createResultlist = (startListInfo, minSplitSec, maxSplitSec, variat
 
         const { raceName, distance, startList } = startListInfo
 
-        const resultInfo = generateResultlist(startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
+        const resultListInfo = generateResultlist(startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
 
         dispatch({
             type: CREATE_RESULTINFO_SUCCESS,
-            payload: resultInfo
+            payload: resultListInfo
         });
     } catch (error) {
         dispatch({

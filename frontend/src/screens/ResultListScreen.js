@@ -16,7 +16,7 @@ const ResultListScreen = ({ match, history }) => {
     }
 
     const resultInfo = useSelector(state => state.resultInfo)
-    const { loading, error, resultInfo: resultInformation } = resultInfo
+    const { loading, error, resultListInfo: resultInformation } = resultInfo
 
     const { raceName, distance } = resultInformation
 
@@ -83,7 +83,7 @@ const ResultListScreen = ({ match, history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {resultInformation.resultListInfo.map((runner, index) => (
+                            {resultInformation.resultList.map((runner, index) => (
                                 <tr key={index}>
                                     <td className='text-center'>{index + 1}</td>
                                     <td>{runner.runnerName}</td>

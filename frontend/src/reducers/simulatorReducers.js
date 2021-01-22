@@ -55,12 +55,12 @@ export const startInfoReducer = (state = { startListInfo: {} }, action) => {
     }
 }
 
-export const resultInfoReducer = (state = { resultInfo: {} }, action) => {
+export const resultInfoReducer = (state = { resultListInfo: {} }, action) => {
     switch (action.type) {
         case CREATE_RESULTINFO_REQUEST:
             return { loading: true, ...state }
         case CREATE_RESULTINFO_SUCCESS:
-            return { loading: false, resultInfo: action.payload }
+            return { loading: false, resultListInfo: action.payload }
         case CREATE_RESULTINFO_FAIL:
             return { loading: false, error: action.payload }
         default:
