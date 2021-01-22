@@ -134,17 +134,33 @@ const calculateResultTime = (startTime, minSplitSec, maxSplitSec, variationSec, 
     let kmTime = 0
     let totalTime = 0
     let previousTotalTime = 0
-    const splitsKm = kilometers.map((km, index) => {
+    let raceVariation = 0
+    const splitsKm = kilometers.map((km) => {
         let sign = minusOrPlus()
         if (km === 0) {
-            kmTime = (startTime / distance) + sign * initialVariationSec * Math.random()
+            raceVariation = sign * initialVariationSec * Math.random()
+            kmTime = (startTime / distance) + raceVariation
             // check min and max
+            if (kmTime < minSplitSec) {
+                raceVariation = (initialVariationSec - (minSplitSec - kmTime)) * Math.random()
+                kmTime = (startTime / distance) + raceVariation
+            } else if (kmTime > maxSplitSec) {
+                raceVariation = -(initialVariationSec - (kmTime - maxSplitSec)) * Math.random()
+                kmTime = (startTime / distance) + raceVariation
+            }
             previousSplit = kmTime
             totalTime = kmTime
             previousTotalTime = totalTime
         } else {
             kmTime = previousSplit + sign * variationSec * Math.random()
             // check min and max
+            if (kmTime <= minSplitSec) {
+                raceVariation = (variationSec - (minSplitSec - kmTime)) * Math.random()
+                kmTime = previousSplit + raceVariation
+            } else if (kmTime >= maxSplitSec) {
+                raceVariation = -(variationSec - (kmTime - maxSplitSec)) * Math.random()
+                kmTime = previousSplit + raceVariation
+            }
             previousSplit = kmTime
             totalTime = previousTotalTime + kmTime
             previousTotalTime = totalTime
