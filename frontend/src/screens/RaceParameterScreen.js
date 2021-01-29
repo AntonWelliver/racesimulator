@@ -68,7 +68,8 @@ const RaceParameterScreen = ({ match, history }) => {
             if (variationSec - initialVariationSec < varDiff) {
                 setMessage(`Initial variation must be at least ${varDiff} seconds faster than variation`)
             } else {
-                dispatch(createResultlist(startListInfo, minSplitSec, maxSplitSec, variationSec, initialVariationSec))
+                const raceParams = { minSplitSec, maxSplitSec, variationSec, initialVariationSec }
+                dispatch(createResultlist(startListInfo, raceParams))
                 history.push(`/resultList/${raceId}`)
             }
         }
@@ -139,7 +140,7 @@ const RaceParameterScreen = ({ match, history }) => {
                                 <Form.Label>Slowest Split Time</Form.Label>
                                 <OverlayTrigger trigger="click" placement="right" overlay={slowestSplitTime}>
                                     <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i class="fas fa-info-circle"></i>
+                                        <i className="fas fa-info-circle"></i>
                                     </Button>
                                 </OverlayTrigger>
                                 <Form.Control type='time' min="02:00" max="10:00" value={maxSplit} onChange={(e) => setMaxSplit(e.target.value)} required></Form.Control>
@@ -148,7 +149,7 @@ const RaceParameterScreen = ({ match, history }) => {
                                 <Form.Label>Variation</Form.Label>
                                 <OverlayTrigger trigger="click" placement="right" overlay={variationTime}>
                                     <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i class="fas fa-info-circle"></i>
+                                        <i className="fas fa-info-circle"></i>
                                     </Button>
                                 </OverlayTrigger>
                                 <Form.Control type='time' min="00:10" max="01:00" value={variation} onChange={(e) => setVariation(e.target.value)} required></Form.Control>
@@ -157,7 +158,7 @@ const RaceParameterScreen = ({ match, history }) => {
                                 <Form.Label>Initial Variation</Form.Label>
                                 <OverlayTrigger trigger="click" placement="right" overlay={initialVariationTime}>
                                     <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i class="fas fa-info-circle"></i>
+                                        <i className="fas fa-info-circle"></i>
                                     </Button>
                                 </OverlayTrigger>
                                 <Form.Control type='time' min="00:10" max="01:00" value={initialVariation} onChange={(e) => setInitialVariation(e.target.value)} required></Form.Control>

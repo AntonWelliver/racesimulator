@@ -3,6 +3,7 @@ import { Button, Table, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import SplitTimes from '../components/SplitTimes';
 
 const ResultListScreen = ({ match, history }) => {
     const raceId = match.params.id;
@@ -19,56 +20,6 @@ const ResultListScreen = ({ match, history }) => {
     const { loading, error, resultListInfo: resultInformation } = resultInfo;
 
     const { raceName, distance } = resultInformation;
-
-    const boldText = {
-        fontWeight: 'bold',
-    };
-    const splitTimes = (allTimes) => {
-        let splitTimesArray = [];
-        allTimes.forEach((split, index) => {
-            let splitStr = runnerTime(split.kmTime);
-            let totalStr = runnerTime(split.totalTime);
-            if (index === 0) {
-                splitTimesArray = [
-                    ...splitTimesArray,
-                    <span style={boldText}>Km {index + 1}:</span>,
-                    <span>{'\u00A0'}</span>,
-                    totalStr,
-                    <span>{'\u00A0\u00A0\u00A0\u00A0'}</span>,
-                    `(${splitStr})`
-                ];
-            } else {
-                if ((index % 5) === 0 && distance > 5) {
-                    splitTimesArray = [...splitTimesArray, <br />]
-                    splitTimesArray = [
-                        ...splitTimesArray,
-                        <span style={boldText}>
-                            Km {index + 1}:
-                        </span>,
-                        <span>{'\u00A0'}</span>,
-                        totalStr,
-                        <span>{'\u00A0\u00A0\u00A0\u00A0'}</span>,
-                        `(${splitStr})`,
-                    ]
-                } else {
-                    splitTimesArray = [
-                        ...splitTimesArray,
-                        <span style={boldText}>
-                            {
-                                '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'
-                            }
-                            Km {index + 1}:
-                        </span>,
-                        <span>{'\u00A0'}</span>,
-                        totalStr,
-                        <span>{'\u00A0\u00A0\u00A0\u00A0'}</span>,
-                        `(${splitStr})`,
-                    ]
-                }
-            }
-        });
-        return splitTimesArray;
-    };
 
     const runnerTime = (times) => {
         let timeLeft = times;
@@ -146,11 +97,15 @@ const ResultListScreen = ({ match, history }) => {
                                                 </td>
                                                 <td>{runner.runnerName}</td>
                                                 <td className='splitTimes'>
-                                                    {splitTimes(runner.allTimes)}
+                                                    <SplitTimes
+                                                        allTimes={runner.allTimes}
+                                                    />
                                                 </td>
-                                                <td className='table-right'>{`${runnerTime(
-                                                    runner.totalTime
-                                                )}`}</td>
+                                                <td className='table-right'>
+                                                    {`${runnerTime(
+                                                        runner.totalTime
+                                                    )}`}
+                                                </td>
                                             </tr>
                                         )
                                     )}

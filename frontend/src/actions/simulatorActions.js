@@ -127,9 +127,9 @@ const minusOrPlus = () => {
     }
 }
 
-const calculateResultTime = (startTime, minSplitSec, maxSplitSec, variationSec, initialVariationSec, distance) => {
+const calculateResultTime = (startTime, raceParams, distance) => {
     const kilometers = [...Array(distance).keys()]
-
+    const { minSplitSec, maxSplitSec, variationSec, initialVariationSec } = raceParams
     let previousSplit = 0
     let kmTime = 0
     let totalTime = 0
@@ -170,10 +170,10 @@ const calculateResultTime = (startTime, minSplitSec, maxSplitSec, variationSec, 
     return splitsKm
 }
 
-const generateResultlist = (startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => {
+const generateResultlist = (startList, raceName, distance, raceParams) => {
     const resultInfo = startList.map(entryInfo => {
         const { startTime, runnerName, _id } = entryInfo
-        let allTimes = calculateResultTime(startTime, minSplitSec, maxSplitSec, variationSec, initialVariationSec, distance)
+        let allTimes = calculateResultTime(startTime, raceParams, distance)
         return {
             allTimes,
             runnerName,
@@ -194,13 +194,13 @@ const generateResultlist = (startList, raceName, distance, minSplitSec, maxSplit
     return info
 }
 
-export const createResultlist = (startListInfo, minSplitSec, maxSplitSec, variationSec, initialVariationSec) => async (dispatch) => {
+export const createResultlist = (startListInfo, raceParams) => async (dispatch) => {
     try {
         dispatch({ type: CREATE_RESULTINFO_REQUEST })
 
         const { raceName, distance, startList } = startListInfo
 
-        const resultListInfo = generateResultlist(startList, raceName, distance, minSplitSec, maxSplitSec, variationSec, initialVariationSec)
+        const resultListInfo = generateResultlist(startList, raceName, distance, raceParams)
 
         dispatch({
             type: CREATE_RESULTINFO_SUCCESS,
