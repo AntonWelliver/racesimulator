@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Row, Col, Button, Form, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Row, Col, Button, Form } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import Message from '../components/Message'
+import InfoBox from '../components/InfoBox'
 import FormContainer from '../components/FormContainer'
 import { createStartlist } from '../actions/simulatorActions'
 
@@ -44,24 +45,6 @@ const EntryParameterScreen = ({ match, history }) => {
         }
     }
 
-    const fastestAverageKmTime = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Fastest Average Km Time</Popover.Title>
-            <Popover.Content>
-                Enter the fastest possible average km time in the start list.
-            </Popover.Content>
-        </Popover>
-    )
-
-    const slowestAverageKmTime = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Slowest Average Km Time</Popover.Title>
-            <Popover.Content>
-                Enter the slowest possible average km time in the start list.
-          </Popover.Content>
-        </Popover>
-    )
-
     return (
         <>
             <Row className='align-items-center text-center my-4'>
@@ -81,20 +64,12 @@ const EntryParameterScreen = ({ match, history }) => {
                     <Form onSubmit={submitHandler}>
                         <Form.Group>
                             <Form.Label>Fastest Average Km Time</Form.Label>
-                            <OverlayTrigger trigger="click" placement="right" overlay={fastestAverageKmTime}>
-                                <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                    <i className="fas fa-info-circle"></i>
-                                </Button>
-                            </OverlayTrigger>
+                            <InfoBox title='Fastest Average Km Time' text='Enter the fastest possible average km time in the start list.' />
                             <Form.Control type="time" min="02:00" max="10:00" value={minKmTime} onChange={(e) => setMinKmTime(e.target.value)} required></Form.Control>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Slowest Average Km Time</Form.Label>
-                            <OverlayTrigger trigger="click" placement="right" overlay={slowestAverageKmTime}>
-                                <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                    <i className="fas fa-info-circle"></i>
-                                </Button>
-                            </OverlayTrigger>
+                            <InfoBox title='Slowest Average Km Time' text='Enter the slowest possible average km time in the start list.' />
                             <Form.Control type='time' min="02:00" max="10:00" value={maxKmTime} onChange={(e) => setMaxKmTime(e.target.value)} required></Form.Control>
                         </Form.Group>
                         <Button type='submit' variant='dark'>Submit</Button>

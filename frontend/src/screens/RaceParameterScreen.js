@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Button, Form, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Row, Col, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import InfoBox from '../components/InfoBox'
 import FormContainer from '../components/FormContainer'
 import { getSingleRaceInfo, createResultlist } from '../actions/simulatorActions'
 import { SINGLE_RACE_RESET } from '../constants/simulatorConstants'
@@ -75,39 +76,6 @@ const RaceParameterScreen = ({ match, history }) => {
         }
     }
 
-    const fastestSplitTime = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Fastest Split Time</Popover.Title>
-            <Popover.Content>
-                Enter the fastest possible split time for the race.
-            </Popover.Content>
-        </Popover>
-    )
-    const slowestSplitTime = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Slowest Split Time</Popover.Title>
-            <Popover.Content>
-                Enter the slowest possible split time for the race.
-            </Popover.Content>
-        </Popover>
-    )
-    const variationTime = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Variation</Popover.Title>
-            <Popover.Content>
-                Enter the maximum variation in seconds for the each kilometer split time.
-            </Popover.Content>
-        </Popover>
-    )
-    const initialVariationTime = (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Initial variation</Popover.Title>
-            <Popover.Content>
-                Enter the maximum variation in seconds for the first kilometer split time.
-            </Popover.Content>
-        </Popover>
-    )
-
     return (
         <>
             <Row className='align-items-center text-center my-4'>
@@ -129,38 +97,22 @@ const RaceParameterScreen = ({ match, history }) => {
                         <Form onSubmit={submitHandler}>
                             <Form.Group>
                                 <Form.Label>Fastest Split Time</Form.Label>
-                                <OverlayTrigger trigger="click" placement="right" overlay={fastestSplitTime}>
-                                    <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i class="fas fa-info-circle"></i>
-                                    </Button>
-                                </OverlayTrigger>
+                                <InfoBox title='Fastest Split Time' text='Enter the fastest possible split time for the race.' />
                                 <Form.Control type="time" min="02:00" max="10:00" value={minSplit} onChange={(e) => setMinSplit(e.target.value)} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Slowest Split Time</Form.Label>
-                                <OverlayTrigger trigger="click" placement="right" overlay={slowestSplitTime}>
-                                    <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i className="fas fa-info-circle"></i>
-                                    </Button>
-                                </OverlayTrigger>
+                                <InfoBox title='Slowest Split Time' text='Enter the slowest possible split time for the race.' />
                                 <Form.Control type='time' min="02:00" max="10:00" value={maxSplit} onChange={(e) => setMaxSplit(e.target.value)} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Variation</Form.Label>
-                                <OverlayTrigger trigger="click" placement="right" overlay={variationTime}>
-                                    <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i className="fas fa-info-circle"></i>
-                                    </Button>
-                                </OverlayTrigger>
+                                <InfoBox title='Variation' text='Enter the maximum variation in seconds for the each kilometer split time.' />
                                 <Form.Control type='time' min="00:10" max="01:00" value={variation} onChange={(e) => setVariation(e.target.value)} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Initial Variation</Form.Label>
-                                <OverlayTrigger trigger="click" placement="right" overlay={initialVariationTime}>
-                                    <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                                        <i className="fas fa-info-circle"></i>
-                                    </Button>
-                                </OverlayTrigger>
+                                <InfoBox title='Initial Variation' text='Enter the maximum variation in seconds for the first kilometer split time.' />
                                 <Form.Control type='time' min="00:10" max="01:00" value={initialVariation} onChange={(e) => setInitialVariation(e.target.value)} required></Form.Control>
                             </Form.Group>
 
