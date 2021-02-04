@@ -6,15 +6,21 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listRaces } from '../actions/simulatorActions'
 
-const RaceListScreen = () => {
+const RaceListScreen = ({ history }) => {
 	const dispatch = useDispatch()
 
 	const raceList = useSelector(state => state.raceList)
 	const { loading, error, races } = raceList
 
+	const userLogin = useSelector(state => state.userLogin)
+	const { userInfo } = userLogin
+
 	useEffect(() => {
+		if (!userInfo) {
+			history.push('/login')
+		}
 		dispatch(listRaces())
-	}, [dispatch])
+	}, [dispatch, history, userInfo])
 
 	return (
 		<>

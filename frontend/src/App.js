@@ -8,6 +8,7 @@ import RaceParameterScreen from './screens/RaceParameterScreen'
 import EntryParameterScreen from './screens/EntryParameterScreen'
 import StartListScreen from './screens/StartListScreen'
 import ResultListScreen from './screens/ResultListScreen'
+import LoginScreen from './screens/LoginScreen'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path='/entry-parameters/:id' component={EntryParameterScreen} />
           <Route path='/startlist/:id' component={StartListScreen} />
           <Route path='/resultlist/:id' component={ResultListScreen} />
+          <Route path='/login' component={LoginScreen} />
         </Container>
       </main>
       <Footer />

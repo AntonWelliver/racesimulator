@@ -12,6 +12,10 @@ import {
     CREATE_RESULTINFO_REQUEST,
     CREATE_RESULTINFO_SUCCESS,
     CREATE_RESULTINFO_FAIL,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGOUT
 } from '../constants/simulatorConstants';
 
 export const listRaces = () => async (dispatch) => {
@@ -215,4 +219,38 @@ export const createResultlist = (startListInfo, raceParams) => async (dispatch) 
                     : error.message,
         })
     }
+}
+
+export const login = (email, password) => async (dispatch) => {
+    try {
+        dispatch({ type: LOGIN_REQUEST })
+
+        const config = {
+            headers: {
+                'Content.Type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.post('/api/v1/users/login', { email, password }, config)
+
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data
+        });
+
+        sessionStorage.setItem('userInfo', JSON.stringify(data))
+    } catch (error) {
+        dispatch({
+            type: LOGIN_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const logout = () => (dispatch) => {
+    localStorage.removeItem('userInfo')
+    dispatch({ type: LOGOUT })
 }

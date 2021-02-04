@@ -11,7 +11,11 @@ import {
     CREATE_STARTLIST_FAIL,
     CREATE_RESULTINFO_REQUEST,
     CREATE_RESULTINFO_SUCCESS,
-    CREATE_RESULTINFO_FAIL
+    CREATE_RESULTINFO_FAIL,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGOUT
 } from '../constants/simulatorConstants'
 
 export const raceListReducer = (state = { races: [] }, action) => {
@@ -63,6 +67,21 @@ export const resultInfoReducer = (state = { resultListInfo: {} }, action) => {
             return { loading: false, resultListInfo: action.payload }
         case CREATE_RESULTINFO_FAIL:
             return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const userLoginReducer = (state = {}, action) => {
+    switch (action.type) {
+        case LOGIN_REQUEST:
+            return { loading: true }
+        case LOGIN_SUCCESS:
+            return { loading: false, userInfo: action.payload }
+        case LOGIN_FAIL:
+            return { loading: false, error: action.payload }
+        case LOGOUT:
+            return {}
         default:
             return state
     }
