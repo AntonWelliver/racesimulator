@@ -16,7 +16,7 @@ const InfoBox = ({ title, text }) => {
     return (
         <OverlayTrigger trigger="click" placement="right" overlay={infoContent}>
             <Button variant='light' className='mb-2 ml-3 btn-sm'>
-                <i class="fas fa-info-circle"></i>
+                <i className="fas fa-info-circle"></i>
             </Button>
         </OverlayTrigger>
     )
