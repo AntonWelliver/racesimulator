@@ -1,12 +1,15 @@
 import React from 'react';
 import { Button, Table, Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import SplitTimes from '../components/SplitTimes';
+import { saveResult } from '../actions/simulatorActions'
 
 const ResultListScreen = ({ match, history }) => {
     const raceId = match.params.id;
+
+    const dispatch = useDispatch()
 
     const backToRaceList = () => {
         history.push('/');
@@ -39,6 +42,10 @@ const ResultListScreen = ({ match, history }) => {
         return time;
     };
 
+    const saveResultList = () => {
+        dispatch(saveResult(raceId, resultInformation))
+    }
+
     return (
         <>
             <Row className='align-items-center text-center my-4'>
@@ -59,6 +66,7 @@ const ResultListScreen = ({ match, history }) => {
                 <Col>
                     <h1>ResultList</h1>
                 </Col>
+                <Button variant='light' className='align-self-center' onClick={() => saveResultList()}>Save</Button>
             </Row>
             {loading ? (
                 <Loader />
@@ -85,23 +93,23 @@ const ResultListScreen = ({ match, history }) => {
                                         <th></th>
                                         <th>Name</th>
                                         <th className='text-center'>Split times</th>
-                                        <th className='table-right'>Time</th>
+                                        <th className='table-center'>Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {resultInformation.resultList.map(
                                         (runner, index) => (
                                             <tr key={index}>
-                                                <td className='text-center'>
+                                                <td className='text-center font-weight-bold'>
                                                     {index + 1}
                                                 </td>
-                                                <td>{runner.runnerName}</td>
+                                                <td className='font-weight-bold'>{runner.runnerName}</td>
                                                 <td className='splitTimes'>
                                                     <SplitTimes
                                                         allTimes={runner.allTimes}
                                                     />
                                                 </td>
-                                                <td className='table-right'>
+                                                <td className='table-center font-weight-bold'>
                                                     {`${runnerTime(
                                                         runner.totalTime
                                                     )}`}

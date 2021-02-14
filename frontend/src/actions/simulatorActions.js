@@ -16,6 +16,9 @@ import {
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
 	LOGOUT,
+	SAVE_RESULT_REQUEST,
+	SAVE_RESULT_SUCCESS,
+	SAVE_RESULT_FAIL
 } from '../constants/simulatorConstants';
 
 export const listRaces = () => async (dispatch) => {
@@ -297,3 +300,36 @@ export const logout = () => (dispatch) => {
 	localStorage.removeItem('userInfo');
 	dispatch({ type: LOGOUT });
 };
+
+export const saveResult = (raceId, resultListInfo) => (dispatch) => {
+	try {
+		/* dispatch({ type: SAVE_RESULT_REQUEST });
+
+		const config = {
+			headers: {
+				'Content.Type': 'application/json',
+			},
+		};
+
+		const { data } = await axios.post(
+			'/api/v1/users/login',
+			{ email, password },
+			config
+		); */
+
+		console.log(raceId, resultListInfo)
+
+		dispatch({
+			type: SAVE_RESULT_SUCCESS,
+		});
+
+	} catch (error) {
+		dispatch({
+			type: SAVE_RESULT_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+}

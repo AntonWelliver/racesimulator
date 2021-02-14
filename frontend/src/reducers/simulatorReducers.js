@@ -15,7 +15,10 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT
+    LOGOUT,
+    SAVE_RESULT_REQUEST,
+    SAVE_RESULT_SUCCESS,
+    SAVE_RESULT_FAIL
 } from '../constants/simulatorConstants'
 
 export const raceListReducer = (state = { races: [] }, action) => {
@@ -82,6 +85,19 @@ export const userLoginReducer = (state = {}, action) => {
             return { loading: false, error: action.payload }
         case LOGOUT:
             return {}
+        default:
+            return state
+    }
+}
+
+export const saveResultsReducer = (state = {}, action) => {
+    switch (action.type) {
+        case SAVE_RESULT_REQUEST:
+            return { loading: true }
+        case SAVE_RESULT_SUCCESS:
+            return { loading: false, message: 'Results saved' }
+        case SAVE_RESULT_FAIL:
+            return { loading: false, error: action.payload }
         default:
             return state
     }
