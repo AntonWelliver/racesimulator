@@ -45,6 +45,14 @@ const RaceSchema = new Schema({
 		enum: ['no', 'yes'],
 		default: 'no',
 	},
+	completed: {
+		type: Boolean,
+		default: false
+	},
+	simulated: {
+		type: Boolean,
+		default: false
+	}
 });
 
 // Cascade delete raceEntries when a race is deleted

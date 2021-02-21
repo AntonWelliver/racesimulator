@@ -18,7 +18,7 @@ import {
 	LOGOUT,
 	SAVE_RESULT_REQUEST,
 	SAVE_RESULT_SUCCESS,
-	SAVE_RESULT_FAIL
+	SAVE_RESULT_FAIL,
 } from '../constants/simulatorConstants';
 
 export const listRaces = () => async (dispatch) => {
@@ -301,10 +301,14 @@ export const logout = () => (dispatch) => {
 	dispatch({ type: LOGOUT });
 };
 
-export const saveResult = (raceId, resultListInfo) => (dispatch) => {
+export const saveResult = (raceId, resultListInfo) => async (
+	dispatch,
+	getState
+) => {
 	try {
-		/* dispatch({ type: SAVE_RESULT_REQUEST });
+		dispatch({ type: SAVE_RESULT_REQUEST });
 
+		/*
 		const config = {
 			headers: {
 				'Content.Type': 'application/json',
@@ -312,17 +316,33 @@ export const saveResult = (raceId, resultListInfo) => (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			'/api/v1/users/login',
-			{ email, password },
+			'/api/v1/race-result',
+			{ raceId, resultListInfo },
 			config
-		); */
+		); 
+		*/
 
-		console.log(raceId, resultListInfo)
+		// get token from state
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.post(
+			'/api/v1/race-result',
+			{ raceId, resultListInfo },
+			config
+		);
 
 		dispatch({
 			type: SAVE_RESULT_SUCCESS,
 		});
-
 	} catch (error) {
 		dispatch({
 			type: SAVE_RESULT_FAIL,
@@ -332,4 +352,4 @@ export const saveResult = (raceId, resultListInfo) => (dispatch) => {
 					: error.message,
 		});
 	}
-}
+};

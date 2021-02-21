@@ -7,7 +7,7 @@ const Race = require('../models/raceModel');
 // @route GET /api/v1/race-list
 // @access Public
 exports.getAllRaces = asyncHandler(async (req, res, next) => {
-	const raceList = await Race.find();
+	const raceList = await Race.find({ simulated: true });
 	res.status(200).json({ success: true, count: raceList.length, raceList });
 });
 

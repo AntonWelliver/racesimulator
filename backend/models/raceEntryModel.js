@@ -24,5 +24,15 @@ const RaceEntrySchema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Add an email'],
 	},
+	totalTime: {
+		type: Number,
+		default: 0,
+	},
+	kmTimes: [Number],
+	status: {
+		type: String,
+		enum: ['not-started', 'started', 'completed', 'not-finished'],
+		default: 'not-started',
+	},
 });
 module.exports = mongoose.model('RaceEntry', RaceEntrySchema);

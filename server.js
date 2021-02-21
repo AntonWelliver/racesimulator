@@ -14,6 +14,8 @@ const connectDB = require('./backend/config/db.js');
 // Routes
 const raceRoutes = require('./backend/routes/raceRoutes.js');
 const raceEntryRoutes = require('./backend/routes/raceEntryRoutes.js');
+const raceResultRoutes = require('./backend/routes/raceResultRoutes.js');
+
 
 const userRoutes = require('./backend/routes/userRoutes.js');
 
@@ -36,6 +38,7 @@ app.use(express.json());
 // Should we use /api/v1
 app.use('/api/v1/race-list', raceRoutes);
 app.use('/api/v1/race-entries', raceEntryRoutes);
+app.use('/api/v1/race-result', raceResultRoutes);
 app.use('/api/v1/users', userRoutes);
 
 // For deployment
