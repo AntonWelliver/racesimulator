@@ -45,9 +45,10 @@ const RaceSchema = new Schema({
 		enum: ['no', 'yes'],
 		default: 'no',
 	},
-	completed: {
-		type: Boolean,
-		default: false
+	raceStatus: {
+		type: String,
+		enum: ['open', 'closed', 'completed', 'archived'],
+		default: 'open',
 	},
 	simulated: {
 		type: Boolean,

@@ -34,5 +34,9 @@ const RaceEntrySchema = new mongoose.Schema({
 		enum: ['not-started', 'started', 'completed', 'not-finished'],
 		default: 'not-started',
 	},
+	place: {
+		type: Number,
+		default: 0,
+	},
 });
 module.exports = mongoose.model('RaceEntry', RaceEntrySchema);

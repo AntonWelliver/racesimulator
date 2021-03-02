@@ -25,7 +25,7 @@ exports.createResultList = asyncHandler(async (req, res) => {
 		throw new Error('Race not found');
 	}
 
-	// Update Race till todays date
+	// Update Race till todays date - do this last
 	const raceDate = new Date(race.date).toISOString();
 	const today = new Date();
 	const todayUtc = today.toISOString();
@@ -37,7 +37,7 @@ exports.createResultList = asyncHandler(async (req, res) => {
 
 	const updatedRace = await Race.findByIdAndUpdate(
 		raceId,
-		{ date: raceDate, info3: newInfo, completed: true },
+		{ date: newRaceDate, info3: newInfo, raceStatus: 'completed' },
 		{
 			new: true,
 			runValidators: true,
@@ -51,46 +51,56 @@ exports.createResultList = asyncHandler(async (req, res) => {
 
 	// Update runners
 
-	/*
-	resultListInfo.resultList.forEach((runner, index) => {
-		console.log('runner', index);
-		console.log(runner._id);
-		console.log(runner.totalTime.toFixed(2));
-		console.log('kmTimes', kmTimes(runner.allTimes));
-		
-		runner.allTimes.forEach((lap, index) => {
-			console.log(index, lap.totalTime.toFixed(2));
-		});
-		
+	// Sort by totalTime
+	const sortedResultList = resultListInfo.resultList.sort((a, b) => {
+		return a.totalTime - b.totalTime;
 	});
-*/
+
 	// Prepare results for update
 	// All times as integer in seconds * 100
-	const raceResult = resultListInfo.resultList.map((runner, index) => {
+	let currentPlace = 1;
+	let place = 0;
+	let currentTime = 0;
+	const raceResults = sortedResultList.map((runner, index) => {
+		if (index === 0) {
+			// First runner
+			currentPlace = 1;
+			place = 1;
+			currentTime = runner.totalTime;
+		} else {
+			// Check if next runner has the same time as prev
+			if (runner.totalTime === currentTime) {
+				// same place as prev
+				place = currentPlace;
+			} else {
+				place = index + 1;
+				currentPlace = place;
+				currentTime = runner.totalTime;
+			}
+		}
+
 		return {
 			_id: runner._id,
 			totalTime: (runner.totalTime * 100).toFixed(),
 			kmTimes: kmTimes(runner.allTimes),
+			place: place,
 		};
 	});
 
-	raceResult.forEach(async (runner) => {
+	raceResults.forEach(async (runner) => {
 		// Check that race entry exists
 		//const entry = await RaceEntry.findById(runner._id);
 
 		let totalTime = runner.totalTime;
 		let kmTimes = runner.kmTimes;
-
-		//console.log(totalTime);
-		//console.log(kmTimes);
+		let place = runner.place;
 
 		// Update race entry
-		//	console.log('Updating ', runner._id);
 
 		try {
 			const updatedEntry = await RaceEntry.findByIdAndUpdate(
 				runner._id,
-				{ totalTime, status: 'completed', kmTimes },
+				{ totalTime, status: 'completed', kmTimes, place },
 				{
 					new: true,
 					runValidators: true,
@@ -101,6 +111,10 @@ exports.createResultList = asyncHandler(async (req, res) => {
 			console.log(err.message);
 		}
 	});
+
+	// Update place
+
+	// Update result in db
 
 	res.status(200).json({ message: 'Result List is updated' });
 });
